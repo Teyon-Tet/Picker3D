@@ -112,21 +112,21 @@ namespace Runtime.Managers
                 {
                     if(_mousePosition != null)
                     {
-                        Vector2 mouseDeltaPosition = (Vector2)_mousePosition - _mousePosition.Value;
-                        /*
+                        Vector2 mouseDeltaPosition = (Vector2)Input.mousePosition - _mousePosition.Value;
+                        
                         if(mouseDeltaPosition.x > _data.HorizontalInputSpeed)
                         {
                             _moveVector.x = _data.HorizontalInputSpeed / 10f * mouseDeltaPosition.x;
                         }
-                        else if(mouseDeltaPosition.x < _data.HorizontalInputSpeed)
+                        else if(mouseDeltaPosition.x < -_data.HorizontalInputSpeed)
                         {
-                            _moveVector.x = _data.HorizontalInputSpeed / 10f * mouseDeltaPosition.x;
+                            _moveVector.x = -_data.HorizontalInputSpeed / 10f * -mouseDeltaPosition.x;
                         }
                         else
                         {
                             _moveVector.x = Mathf.SmoothDamp(_moveVector.x, 0f, ref _currentVelocity, _data.ClampSpeed);
                         }
-                        */
+                        
 
                         _moveVector.x = mouseDeltaPosition.x;
                         _mousePosition = Input.mousePosition;

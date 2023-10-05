@@ -1,3 +1,5 @@
+using DG.Tweening;
+using Runtime.Controllers.Pool;
 using Runtime.Managers;
 using Runtime.Signals;
 using System.Collections;
@@ -36,6 +38,22 @@ namespace Runtime.Controllers.Player
                 manager.ForceCommand.Execute();
                 CoreGameSignals.Instance.onStageAreaEntered?.Invoke();
                 InputSignals.Instance.onDisableInput?.Invoke();
+
+                DOVirtual.DelayedCall(3, () =>
+                {
+                    var result = other.transform.parent.GetComponentInChildren<PoolController>().TakeResults(manager.StageValue);
+
+                    if (result)
+                    {
+                        CoreGameSignals.Instance.onStageAreaSuccessful?.Invoke(manager.StageValue);
+                        InputSignals.Instance.onEnableInput?.Invoke();
+                    }
+                    else
+                    {
+                        CoreGameSignals.Instance.onLevelFailed?.Invoke();
+                    }
+                });
+                return;
             }
 
             if (other.CompareTag(_finis))
@@ -51,7 +69,16 @@ namespace Runtime.Controllers.Player
                 // Mini game mechanics
             }
         }
-        
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            var transform1 = manager.transform;
+            var position1 = transform1.position;   
+
+            Gizmos.DrawSphere(new Vector3(position1.x, position1.y + 1f, position1.z + 1f), 1.35f);
+        }
+
         public void OnReset()
         {
 
